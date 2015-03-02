@@ -11,7 +11,7 @@ class Complement
 
   def self.convert(initial_strand, dictionary)
     output = ""
-    initial_strand.length.times { |i| output += dictionary[initial_strand[i]] }
+    initial_strand.each_char { |c| output += dictionary[c] }
     output
   end
 end

@@ -1,110 +1,77 @@
 class Integer < Numeric
-
-  attr_reader = :roman_literal, :original_num
-
-
-  DICTIONARY = { 1 => 'I', 5 => 'V', 10 => 'X', 50 => 'L', 100 => 'C', 500 => 'D', 1000 => 'M' }
-
   def to_roman
-    roman_literal = ""
-    original_num = self
-
-    puts "--"
-    puts "TRY FOR #{original_num}"
-    puts "--"
-
-    process_num(original_num)
-    roman_literal
+    convert(self)
   end
 
-  private
-
-
-  def chop_off_thousand(num)
-    num / 1000
-    
+  def convert(number)
+    current_literal = ""
+    if number > 0
+      remainder = number - get_denomenator(number)
+      current_literal += "#{look_up(number)}#{convert(remainder)}"
+    end
+    current_literal
   end
 
-  # 40 = XL
-  def process2(number)
-
-    # # where does number lie between
-    # closest_numeral = closest_numeral(number)
-
-
-    # number_of_times = number / next_lowest_numeral
-    # # 8 / 5 = 1
-    # # 3 / 1 = 3
-    # # 40 / 10 = 4
-
-    # left_over = number - next_lowest_numeral
-
-  end
-
-
-  def closest_numeral(num)
-    if num < 5
+  def get_denomenator(number)
+    case number
+    when 1..3
       1
-    elsif num < 10
+    when 4
+      4
+    when 5..8
       5
-    elsif num < 50
+    when 9
+      9
+    when 10..39
       10
-    elsif num < 100
+    when 40..49
+      40
+    when 50..89
       50
-    elsif num <500
+    when 90..99
+      90
+    when 100..399
       100
-    elsif num < 1000
+    when 400..499
+      400
+    when 500..899
       500
-    elsif num >= 1000
+    when 900..999
+      900
+    else
       1000
     end
   end
 
-
-
-
-  def process_num(num)
-    current_number = num
-    # work out i
-    i = 5 #work_out_i(current_number)
-    if(current_number != 0)
-      greater = current_number >= i
-      current_literal = ""
-      left_over = 0
-
-      if greater
-        number_of_times = current_number / i
-        number_of_times.times do
-          current_literal += "#{DICTIONARY[i]}"
-        end
-        left_over = current_number - (i * number_of_times)
-      end
-      # going to insert its letter number_of_times
-
-      # puts "LEFT_OVER = #{left_over}"
-      # puts "CURRENT_NUM = #{current_number}"
-      # puts "CURRENT = #{current_literal}"
-
-      if left_over < current_number / 2
-        roman_literal = "#{process_num(left_over)}#{current_literal}"
-        puts roman_literal
-      elsif left_over >=  current_number / 2
-        roman_literal = "#{current_literal}#{process_num(left_over)}"
-        puts roman_literal
-      end
+  def look_up(number)
+    case number
+    when 1..3
+      "I"
+    when 4
+      "IV"
+    when 5..8
+      "V"
+    when 9
+      "IX"
+    when 10..39
+      "X"
+    when 40..49
+      "XL"
+    when 50..89
+      "L"
+    when 90..99
+      "XC"
+    when 100..399
+      "C"
+    when 400..499
+      "CD"
+    when 500..899
+      "D"
+    when 900..999
+      "CM"
     else
-      ""
+      "M"
     end
   end
-
-  def work_out_i(a_num)
-    i = 0
-    DICTIONARY.each do |k,v|
-      if k >= a_num
-        i = k
-      end
-    end
-    i
-  end
-
 end
+
